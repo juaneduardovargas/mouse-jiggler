@@ -2,10 +2,13 @@ import AppKit
 import ApplicationServices
 import Foundation
 
+/// Sends a minimal reversible cursor movement through Core Graphics.
 final class JigglerService {
     private let movementDistance: CGFloat = 2
     private var direction: CGFloat = 1
 
+    /// Moves the pointer a few pixels and restores its original position.
+    /// - Returns: `true` when both mouse events were created and posted.
     func jiggle() -> Bool {
         guard let sourceEvent = CGEvent(source: nil) else {
             return false
@@ -44,6 +47,7 @@ final class JigglerService {
     }
 
     private func clampToVisibleScreens(_ point: CGPoint) -> CGPoint {
+        // Keep the temporary movement within the combined desktop bounds.
         let unionFrame = NSScreen.screens.reduce(CGRect.null) { partialResult, screen in
             partialResult.union(screen.frame)
         }

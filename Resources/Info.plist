@@ -3,7 +3,12 @@
 <plist version="1.0">
 <dict>
     <key>CFBundleDevelopmentRegion</key>
-    <string>es</string>
+    <string>en</string>
+    <key>CFBundleLocalizations</key>
+    <array>
+        <string>en</string>
+        <string>es</string>
+    </array>
     <key>CFBundleExecutable</key>
     <string>MouseJiggler</string>
     <key>CFBundleIconFile</key>
@@ -14,15 +19,19 @@
     <string>6.0</string>
     <key>CFBundleName</key>
     <string>Mouse Jiggler</string>
+    <key>CFBundleDisplayName</key>
+    <string>Mouse Jiggler</string>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleShortVersionString</key>
-    <string>1.0</string>
+    <string>1.0.0</string>
     <key>CFBundleVersion</key>
     <string>1</string>
     <key>LSMinimumSystemVersion</key>
     <string>13.0</string>
     <key>NSHighResolutionCapable</key>
     <true/>
+    <key>NSHumanReadableCopyright</key>
+    <string>Copyright © 2026 Juan Eduardo Vargas. Released under the MIT License.</string>
 </dict>
 </plist>

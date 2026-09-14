@@ -1,0 +1,42 @@
+name: Feature request / Solicitud de funcionalidad
+description: Suggest an improvement / Propón una mejora
+title: "[Feature]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for sharing an idea. Please explain the user problem before describing a solution.
+
+        Gracias por compartir una idea. Explica primero el problema del usuario antes de describir una solución.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or need / Problema o necesidad
+      description: What is difficult or missing today? / ¿Qué resulta difícil o hace falta actualmente?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior / Comportamiento propuesto
+      description: Describe how you expect the feature to work / Describe cómo esperas que funcione
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives / Alternativas
+      description: Mention workarounds or other approaches considered / Menciona soluciones temporales u otros enfoques
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist / Lista de verificación
+      options:
+        - label: I searched for an existing request / Busqué una solicitud existente
+          required: true
+        - label: This request is related to Mouse Jiggler's scope / Esta solicitud corresponde al alcance de Mouse Jiggler
+          required: true

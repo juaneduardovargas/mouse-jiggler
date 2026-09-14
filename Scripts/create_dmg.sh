@@ -10,7 +10,7 @@ DMG_STAGE_DIR="$BUILD_DIR/dmg-root"
 DMG_PATH="$DIST_DIR/$APP_NAME.dmg"
 
 if [[ ! -d "$APP_BUNDLE" ]]; then
-    echo "No se encontro $APP_BUNDLE. Ejecuta primero el build de la app." >&2
+    echo "$APP_BUNDLE was not found. Build the app first." >&2
     exit 1
 fi
 
@@ -28,4 +28,4 @@ hdiutil create \
     -format UDZO \
     "$DMG_PATH" >/dev/null
 
-echo "DMG creada en: $DMG_PATH"
+echo "DMG created at: $DMG_PATH"

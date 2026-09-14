@@ -1,0 +1,69 @@
+/* Aplicacion */
+"app.name" = "Mouse Jiggler";
+"window.title" = "Mouse Jiggler";
+
+/* Acciones comunes */
+"common.close" = "Cerrar";
+"common.quit" = "Salir";
+"button.start" = "Iniciar";
+"button.stop" = "Detener";
+"button.jiggleNow" = "Mover ahora";
+"button.refreshPermissions" = "Actualizar permisos";
+"button.openAccessibility" = "Abrir Ajustes de Accesibilidad";
+
+/* Estado y actividad */
+"status.running" = "En ejecución";
+"status.ready" = "Listo para iniciar";
+"status.active.short" = " Activo";
+"status.inactive.short" = " Inactivo";
+"status.active" = "Estado: Activo";
+"status.inactive" = "Estado: Inactivo";
+"activity.running.last" = "Activo. Último movimiento: %@.";
+"activity.running.interval" = "Activo. Intervalo actual: %@ s.";
+"activity.stopped.interval" = "Detenido. Intervalo configurado: %@ s.";
+"activity.none" = "Sin movimientos todavía.";
+"activity.last" = "Último movimiento: %@.";
+
+/* Intervalo */
+"interval.title" = "Intervalo";
+"interval.placeholder" = "Segundos";
+"interval.unit" = "segundos";
+"interval.help" = "El control rápido va de 0.5 a 60 segundos. Escribe un valor manualmente para usar un intervalo mayor.";
+"interval.preset" = "%d s";
+"menu.interval" = "Intervalo: %@ s";
+
+/* Automatizacion */
+"automation.title" = "Automatización";
+"automation.startJiggling" = "Iniciar movimiento al abrir la app";
+"automation.launchAtLogin" = "Abrir la app al iniciar sesión en macOS";
+"automation.help" = "Usa el indicador de la barra superior para acceder a estos controles en cualquier momento.";
+"automation.enabled" = "La app se abrirá automáticamente al iniciar sesión.";
+"automation.requiresApproval" = "macOS requiere aprobación en Ajustes del Sistema para abrir la app al iniciar sesión.";
+"automation.notRegistered" = "La app no está configurada para abrirse al iniciar sesión.";
+"automation.notFound" = "macOS no encontró el registro de inicio de sesión para esta app.";
+"automation.unknown" = "No se pudo determinar el estado de inicio de sesión.";
+"automation.unsupported" = "Abrir al iniciar sesión requiere macOS 13 o superior.";
+
+/* Permisos y avisos */
+"permissions.title" = "Permisos";
+"permission.granted" = "Permiso de Accesibilidad concedido.";
+"permission.required" = "macOS necesita permiso de Accesibilidad para mover el cursor.";
+"permission.menu.granted" = "Accesibilidad: OK";
+"permission.menu.pending" = "Accesibilidad: pendiente";
+"notice.title" = "Aviso";
+"notice.launchApproval" = "macOS necesita aprobación para abrir la app al iniciar sesión.";
+"notice.accessibilityRequired" = "Concede Accesibilidad para que la app pueda mover el cursor.";
+"notice.accessibilityMissing" = "Se necesita permiso de Accesibilidad para mover el cursor.";
+"notice.jiggleFailed" = "No se pudo enviar el movimiento del cursor.";
+"notice.loginNotFound" = "macOS no encontró el servicio de inicio de sesión.";
+"notice.loginUnknown" = "macOS devolvió un estado inesperado para el inicio de sesión.";
+
+/* Menu */
+"menu.lastMovement.none" = "Sin movimientos todavía.";
+"menu.lastMovement" = "Último movimiento: %@.";
+"menu.start" = "Iniciar movimiento";
+"menu.stop" = "Detener movimiento";
+"menu.openPanel" = "Abrir panel de control";
+"menu.startJiggling" = "Iniciar movimiento al abrir la app";
+"menu.launchAtLogin" = "Abrir la app al iniciar sesión";
+"menu.version" = "Versión %@";

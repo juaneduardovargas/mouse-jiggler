@@ -1,6 +1,7 @@
 import Foundation
 import ServiceManagement
 
+/// Wraps Service Management APIs used to launch the main app at login.
 @MainActor
 final class LoginItemService {
     enum UpdateResult {
@@ -10,7 +11,9 @@ final class LoginItemService {
         case failure(String)
     }
 
-    private let unsupportedMessage = "Abrir al iniciar sesion requiere macOS 13 o superior."
+    private var unsupportedMessage: String {
+        L10n.text("automation.unsupported", fallback: "Open at login requires macOS 13 or later.")
+    }
 
     var isSupported: Bool {
         if #available(macOS 13.0, *) {
@@ -32,15 +35,30 @@ final class LoginItemService {
         if #available(macOS 13.0, *) {
             switch SMAppService.mainApp.status {
             case .enabled:
-                return "Abrira automaticamente al iniciar sesion."
+                return L10n.text(
+                    "automation.enabled",
+                    fallback: "The app will open automatically when you log in."
+                )
             case .requiresApproval:
-                return "macOS requiere aprobacion en Ajustes para abrir al iniciar sesion."
+                return L10n.text(
+                    "automation.requiresApproval",
+                    fallback: "macOS requires approval in System Settings before the app can open at login."
+                )
             case .notRegistered:
-                return "No esta configurada para abrir al iniciar sesion."
+                return L10n.text(
+                    "automation.notRegistered",
+                    fallback: "The app is not configured to open at login."
+                )
             case .notFound:
-                return "macOS no encontro el registro de inicio de sesion para esta app."
+                return L10n.text(
+                    "automation.notFound",
+                    fallback: "macOS could not find the login item registration for this app."
+                )
             @unknown default:
-                return "El estado de inicio de sesion no pudo determinarse."
+                return L10n.text(
+                    "automation.unknown",
+                    fallback: "The login item status could not be determined."
+                )
             }
         }
 
@@ -72,9 +90,16 @@ final class LoginItemService {
         case .requiresApproval:
             return .requiresApproval
         case .notFound:
-            return .failure("macOS no encontro el servicio de inicio de sesion.")
+            return .failure(
+                L10n.text("notice.loginNotFound", fallback: "macOS could not find the login item service.")
+            )
         @unknown default:
-            return .failure("macOS devolvio un estado inesperado para el inicio de sesion.")
+            return .failure(
+                L10n.text(
+                    "notice.loginUnknown",
+                    fallback: "macOS returned an unexpected login item status."
+                )
+            )
         }
     }
 }

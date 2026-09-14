@@ -1,5 +1,6 @@
 import AppKit
 
+/// Owns the persistent macOS menu bar item and its quick-action menu.
 @MainActor
 final class StatusItemController: NSObject {
     private let appModel: AppModel
@@ -32,25 +33,45 @@ final class StatusItemController: NSObject {
         refresh()
     }
 
+    /// Synchronizes every menu title and indicator with the latest model state.
     func refresh() {
         statusItem.button?.image = StatusIconRenderer.make(isRunning: appModel.isRunning)
-        statusItem.button?.title = appModel.isRunning ? " Activo" : " Inactivo"
-        statusItem.button?.toolTip = "Mouse Jiggler"
+        statusItem.button?.title = appModel.isRunning
+            ? L10n.text("status.active.short", fallback: " Active")
+            : L10n.text("status.inactive.short", fallback: " Inactive")
+        statusItem.button?.toolTip = L10n.text("app.name", fallback: "Mouse Jiggler")
 
-        statusItemMenuEntry.title = appModel.isRunning ? "Estado: Activo" : "Estado: Inactivo"
+        statusItemMenuEntry.title = appModel.isRunning
+            ? L10n.text("status.active", fallback: "Status: Active")
+            : L10n.text("status.inactive", fallback: "Status: Inactive")
         lastMovementItem.title = appModel.lastJiggleDescription
-        toggleRunningItem.title = appModel.isRunning ? "Detener movimiento" : "Iniciar movimiento"
-        openPanelItem.title = "Abrir panel"
-        jiggleNowItem.title = "Mover ahora"
-        startOnLaunchItem.title = "Iniciar movimiento al abrir la app"
+        toggleRunningItem.title = appModel.isRunning
+            ? L10n.text("menu.stop", fallback: "Stop movement")
+            : L10n.text("menu.start", fallback: "Start movement")
+        openPanelItem.title = L10n.text("menu.openPanel", fallback: "Open control panel")
+        jiggleNowItem.title = L10n.text("button.jiggleNow", fallback: "Move now")
+        startOnLaunchItem.title = L10n.text(
+            "menu.startJiggling",
+            fallback: "Start movement when the app opens"
+        )
         startOnLaunchItem.state = appModel.startJigglingOnLaunch ? .on : .off
-        launchAtLoginItem.title = "Abrir la app al iniciar sesion"
+        launchAtLoginItem.title = L10n.text("menu.launchAtLogin", fallback: "Open the app at login")
         launchAtLoginItem.state = appModel.launchAtLoginEnabled ? .on : .off
-        intervalItem.title = "Intervalo: \(appModel.formattedInterval) s"
-        permissionItem.title = appModel.hasAccessibilityPermission ? "Accesibilidad: OK" : "Accesibilidad: pendiente"
-        versionItem.title = "Version 1.0"
-        quitItem.title = "Salir"
+        intervalItem.title = L10n.format(
+            "menu.interval",
+            fallback: "Interval: %@ s",
+            appModel.formattedInterval
+        )
+        permissionItem.title = appModel.hasAccessibilityPermission
+            ? L10n.text("permission.menu.granted", fallback: "Accessibility: OK")
+            : L10n.text("permission.menu.pending", fallback: "Accessibility: Pending")
+
+        let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1.0"
+        versionItem.title = L10n.format("menu.version", fallback: "Version %@", version)
+        quitItem.title = L10n.text("common.quit", fallback: "Quit")
     }
+
+    // MARK: - Setup
 
     private func configureStatusItem() {
         guard let button = statusItem.button else { return }
@@ -58,6 +79,8 @@ final class StatusItemController: NSObject {
         button.imagePosition = .imageLeading
         statusItem.menu = menu
     }
+
+    // MARK: - Actions
 
     private func configureMenu() {
         statusItemMenuEntry.isEnabled = false

@@ -9,9 +9,10 @@ APP_BUNDLE="$BUILD_DIR/$APP_NAME.app"
 PKG_STAGE_DIR="$BUILD_DIR/pkg-root"
 PKG_PATH="$DIST_DIR/$APP_NAME.pkg"
 INSTALLER_SIGN_IDENTITY="${INSTALLER_SIGN_IDENTITY:-}"
+APP_VERSION="$(plutil -extract CFBundleShortVersionString raw "$ROOT_DIR/Resources/Info.plist")"
 
 if [[ ! -d "$APP_BUNDLE" ]]; then
-    echo "No se encontro $APP_BUNDLE. Ejecuta primero el build de la app." >&2
+    echo "$APP_BUNDLE was not found. Build the app first." >&2
     exit 1
 fi
 
@@ -23,7 +24,7 @@ rm -f "$PKG_PATH"
 pkgbuild \
     --root "$PKG_STAGE_DIR" \
     --identifier "com.juan.mousejiggler.pkg" \
-    --version "1.0" \
+    --version "$APP_VERSION" \
     --install-location "/" \
     "$PKG_PATH" >/dev/null
 
@@ -33,4 +34,4 @@ if [[ -n "$INSTALLER_SIGN_IDENTITY" ]]; then
     mv -f "$SIGNED_PKG_PATH" "$PKG_PATH"
 fi
 
-echo "PKG creada en: $PKG_PATH"
+echo "PKG created at: $PKG_PATH"

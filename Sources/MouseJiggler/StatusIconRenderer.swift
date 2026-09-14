@@ -1,6 +1,8 @@
 import AppKit
 
+/// Draws a template menu bar icon that reflects the current running state.
 enum StatusIconRenderer {
+    /// Creates a monochrome pointer icon with motion waves while the jiggler is active.
     static func make(isRunning: Bool) -> NSImage {
         let size = NSSize(width: 18, height: 18)
         let image = NSImage(size: size)

@@ -16,3 +16,11 @@ xcuserdata/
 .env
 .env.*
 !.env.example
+
+# Apple signing and notarization material
+*.cer
+*.p12
+*.provisionprofile
+*.mobileprovision
+*.keychain
+*.keychain-db

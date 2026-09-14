@@ -1,0 +1,101 @@
+name: Bug report / Reporte de error
+description: Report reproducible incorrect behavior / Reporta un comportamiento incorrecto reproducible
+title: "[Bug]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for helping improve Mouse Jiggler. Please remove personal information from screenshots and logs.
+
+        Gracias por ayudar a mejorar Mouse Jiggler. Elimina información personal de capturas y registros.
+
+  - type: input
+    id: version
+    attributes:
+      label: App version / Versión de la app
+      placeholder: "1.0.0 or commit hash / 1.0.0 o hash del commit"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: macos
+    attributes:
+      label: macOS version / Versión de macOS
+      options:
+        - macOS 26
+        - macOS 15 Sequoia
+        - macOS 14 Sonoma
+        - macOS 13 Ventura
+        - Other / Otra
+    validations:
+      required: true
+
+  - type: dropdown
+    id: architecture
+    attributes:
+      label: Mac architecture / Arquitectura del Mac
+      options:
+        - Apple Silicon (arm64)
+        - Intel (x86_64)
+        - Unknown / No sé
+    validations:
+      required: true
+
+  - type: dropdown
+    id: installation
+    attributes:
+      label: Installation method / Método de instalación
+      options:
+        - Built from source / Compilada desde el código
+        - DMG
+        - PKG
+        - App bundle / Bundle de la app
+        - Other / Otro
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened? / ¿Qué ocurrió?
+      description: Describe the actual and expected behavior / Describe el comportamiento actual y esperado
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction steps / Pasos para reproducir
+      placeholder: |
+        1. Open...
+        2. Select...
+        3. Observe...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: accessibility
+    attributes:
+      label: Accessibility permission / Permiso de Accesibilidad
+      options:
+        - Enabled / Activado
+        - Disabled / Desactivado
+        - Unknown / No sé
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context / Contexto adicional
+      description: Add sanitized screenshots or logs if useful / Agrega capturas o registros sin información personal
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist / Lista de verificación
+      options:
+        - label: I searched for an existing issue / Busqué un issue existente
+          required: true
+        - label: This report does not contain sensitive information / Este reporte no contiene información sensible
+          required: true

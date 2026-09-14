@@ -2,6 +2,7 @@ import AppKit
 import Combine
 import SwiftUI
 
+/// Creates the AppKit UI surfaces and connects them to the shared application model.
 @MainActor
 final class AppDelegate: NSObject, NSApplicationDelegate {
     private let appModel = AppModel.shared
@@ -10,7 +11,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var cancellables = Set<AnyCancellable>()
     private let didPresentWindowKey = "mouseJiggler.didPresentWindow"
 
+    // MARK: - Application lifecycle
+
     func applicationWillFinishLaunching(_ notification: Notification) {
+        // A regular activation policy keeps the Dock icon available alongside the status item.
         NSApp.setActivationPolicy(.regular)
     }
 
@@ -66,6 +70,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         return true
     }
 
+    // MARK: - Model observation
+
     private func observeModel() {
         appModel.$isRunning
             .receive(on: RunLoop.main)
@@ -109,6 +115,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             }
             .store(in: &cancellables)
     }
+
+    // MARK: - First launch
 
     private func presentWindowOnFirstLaunch() {
         guard !UserDefaults.standard.bool(forKey: didPresentWindowKey) else { return }

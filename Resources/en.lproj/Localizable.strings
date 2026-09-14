@@ -1,0 +1,69 @@
+/* Application */
+"app.name" = "Mouse Jiggler";
+"window.title" = "Mouse Jiggler";
+
+/* Common actions */
+"common.close" = "Close";
+"common.quit" = "Quit";
+"button.start" = "Start";
+"button.stop" = "Stop";
+"button.jiggleNow" = "Move now";
+"button.refreshPermissions" = "Refresh permissions";
+"button.openAccessibility" = "Open Accessibility Settings";
+
+/* Status and activity */
+"status.running" = "Running";
+"status.ready" = "Ready to start";
+"status.active.short" = " Active";
+"status.inactive.short" = " Inactive";
+"status.active" = "Status: Active";
+"status.inactive" = "Status: Inactive";
+"activity.running.last" = "Running. Last movement: %@.";
+"activity.running.interval" = "Running. Current interval: %@ s.";
+"activity.stopped.interval" = "Stopped. Configured interval: %@ s.";
+"activity.none" = "No movements yet.";
+"activity.last" = "Last movement: %@.";
+
+/* Interval */
+"interval.title" = "Interval";
+"interval.placeholder" = "Seconds";
+"interval.unit" = "seconds";
+"interval.help" = "The quick control ranges from 0.5 to 60 seconds. Enter a value manually for a longer interval.";
+"interval.preset" = "%d s";
+"menu.interval" = "Interval: %@ s";
+
+/* Automation */
+"automation.title" = "Automation";
+"automation.startJiggling" = "Start movement when the app opens";
+"automation.launchAtLogin" = "Open the app when you log in to macOS";
+"automation.help" = "Use the menu bar indicator to access these controls at any time.";
+"automation.enabled" = "The app will open automatically when you log in.";
+"automation.requiresApproval" = "macOS requires approval in System Settings before the app can open at login.";
+"automation.notRegistered" = "The app is not configured to open at login.";
+"automation.notFound" = "macOS could not find the login item registration for this app.";
+"automation.unknown" = "The login item status could not be determined.";
+"automation.unsupported" = "Open at login requires macOS 13 or later.";
+
+/* Permissions and notices */
+"permissions.title" = "Permissions";
+"permission.granted" = "Accessibility permission granted.";
+"permission.required" = "macOS needs Accessibility permission to move the cursor.";
+"permission.menu.granted" = "Accessibility: OK";
+"permission.menu.pending" = "Accessibility: Pending";
+"notice.title" = "Notice";
+"notice.launchApproval" = "macOS requires approval before the app can open at login.";
+"notice.accessibilityRequired" = "Grant Accessibility permission so the app can move the cursor.";
+"notice.accessibilityMissing" = "Accessibility permission is required to move the cursor.";
+"notice.jiggleFailed" = "The cursor movement could not be sent.";
+"notice.loginNotFound" = "macOS could not find the login item service.";
+"notice.loginUnknown" = "macOS returned an unexpected login item status.";
+
+/* Menu */
+"menu.lastMovement.none" = "No movements yet.";
+"menu.lastMovement" = "Last movement: %@.";
+"menu.start" = "Start movement";
+"menu.stop" = "Stop movement";
+"menu.openPanel" = "Open control panel";
+"menu.startJiggling" = "Start movement when the app opens";
+"menu.launchAtLogin" = "Open the app at login";
+"menu.version" = "Version %@";

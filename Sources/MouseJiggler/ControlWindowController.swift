@@ -1,6 +1,7 @@
 import AppKit
 import SwiftUI
 
+/// Hosts the SwiftUI control panel in a reusable AppKit window.
 @MainActor
 final class ControlWindowController: NSWindowController, NSWindowDelegate {
     init(appModel: AppModel) {
@@ -11,7 +12,7 @@ final class ControlWindowController: NSWindowController, NSWindowDelegate {
         hostingView.translatesAutoresizingMaskIntoConstraints = false
 
         let contentViewController = NSViewController()
-        contentViewController.view = NSView(frame: NSRect(x: 0, y: 0, width: 410, height: 460))
+        contentViewController.view = NSView(frame: NSRect(x: 0, y: 0, width: 430, height: 700))
         contentViewController.view.addSubview(hostingView)
 
         NSLayoutConstraint.activate([
@@ -22,14 +23,14 @@ final class ControlWindowController: NSWindowController, NSWindowDelegate {
         ])
 
         let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 410, height: 460),
+            contentRect: NSRect(x: 0, y: 0, width: 430, height: 700),
             styleMask: [.titled, .closable, .miniaturizable],
             backing: .buffered,
             defer: false
         )
 
         window.contentViewController = contentViewController
-        window.title = "Mouse Jiggler"
+        window.title = L10n.text("window.title", fallback: "Mouse Jiggler")
         window.center()
         window.isReleasedWhenClosed = false
         window.collectionBehavior = [.moveToActiveSpace]
@@ -40,9 +41,10 @@ final class ControlWindowController: NSWindowController, NSWindowDelegate {
 
     @available(*, unavailable)
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) no esta soportado")
+        fatalError("init(coder:) is not supported")
     }
 
+    /// Shows or hides the panel without terminating the menu bar application.
     func toggleVisibility() {
         guard let window else { return }
 

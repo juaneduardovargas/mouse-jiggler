@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build and validate
+    runs-on: macos-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Validate repository whitespace
+        run: git log -1 --check
+
+      - name: Validate localizations
+        run: zsh Scripts/validate_localizations.sh
+
+      - name: Build application and packages
+        run: zsh Scripts/build_app.sh
+
+      - name: Verify app bundle
+        run: |
+          test -x build/MouseJiggler.app/Contents/MacOS/MouseJiggler
+          test -f build/MouseJiggler.app/Contents/Resources/en.lproj/Localizable.strings
+          test -f build/MouseJiggler.app/Contents/Resources/es.lproj/Localizable.strings
+          plutil -lint build/MouseJiggler.app/Contents/Info.plist
+          codesign --verify --deep --strict build/MouseJiggler.app

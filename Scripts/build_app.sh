@@ -20,9 +20,11 @@ PKG_PATH="$DIST_DIR/$APP_NAME.pkg"
 rm -rf "$APP_BUNDLE" "$DIST_APP_BUNDLE" "$ICONSET_DIR"
 mkdir -p "$MACOS_DIR" "$RESOURCES_DIR" "$DIST_DIR"
 
+zsh "$ROOT_DIR/Scripts/validate_localizations.sh"
 swift "$ROOT_DIR/Scripts/generate_icon.swift" "$ICONSET_DIR"
 iconutil -c icns "$ICONSET_DIR" -o "$RESOURCES_DIR/AppIcon.icns"
 cp "$ROOT_DIR/Resources/Info.plist" "$CONTENTS_DIR/Info.plist"
+cp -R "$ROOT_DIR"/Resources/*.lproj "$RESOURCES_DIR/"
 
 xcrun swiftc \
     -target "$ARCH-apple-macosx13.0" \
@@ -35,15 +37,25 @@ xcrun swiftc \
     -framework ServiceManagement \
     -o "$MACOS_DIR/$APP_NAME"
 
-codesign --force --deep --sign "$APP_SIGN_IDENTITY" "$APP_BUNDLE" >/dev/null
+if [[ "$APP_SIGN_IDENTITY" == "-" ]]; then
+    codesign --force --deep --sign - "$APP_BUNDLE" >/dev/null
+else
+    codesign \
+        --force \
+        --deep \
+        --options runtime \
+        --timestamp \
+        --sign "$APP_SIGN_IDENTITY" \
+        "$APP_BUNDLE" >/dev/null
+fi
 cp -R "$APP_BUNDLE" "$DIST_APP_BUNDLE"
 rm -f "$ZIP_PATH"
 ditto -c -k --keepParent "$APP_BUNDLE" "$ZIP_PATH"
 zsh "$ROOT_DIR/Scripts/create_dmg.sh"
 zsh "$ROOT_DIR/Scripts/create_pkg.sh"
 
-echo "App creada en: $APP_BUNDLE"
-echo "App copiada en: $DIST_APP_BUNDLE"
-echo "ZIP creado en: $ZIP_PATH"
-echo "DMG creada en: $DMG_PATH"
-echo "PKG creada en: $PKG_PATH"
+echo "App created at: $APP_BUNDLE"
+echo "App copied to: $DIST_APP_BUNDLE"
+echo "ZIP created at: $ZIP_PATH"
+echo "DMG created at: $DMG_PATH"
+echo "PKG created at: $PKG_PATH"

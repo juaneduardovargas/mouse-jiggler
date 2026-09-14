@@ -3,7 +3,7 @@ import Foundation
 
 let arguments = CommandLine.arguments
 guard arguments.count == 2 else {
-    fputs("Uso: swift generate_icon.swift <directorio_iconset>\n", stderr)
+    fputs("Usage: swift generate_icon.swift <iconset_directory>\n", stderr)
     exit(1)
 }
 

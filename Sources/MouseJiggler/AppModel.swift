@@ -2,9 +2,12 @@ import AppKit
 import ApplicationServices
 import Foundation
 
+/// Owns the application state and coordinates cursor movement, permissions, and preferences.
 @MainActor
 final class AppModel: ObservableObject {
     static let shared = AppModel()
+
+    // MARK: - Observable state
 
     @Published private(set) var intervalSeconds: Double
     @Published private(set) var isRunning = false
@@ -24,6 +27,8 @@ final class AppModel: ObservableObject {
     private let intervalKey = "mouseJiggler.intervalSeconds"
     private let startJigglingOnLaunchKey = "mouseJiggler.startJigglingOnLaunch"
 
+    // MARK: - Lifecycle
+
     private init() {
         let storedInterval = UserDefaults.standard.object(forKey: intervalKey) as? Double
         intervalSeconds = Self.clamp(storedInterval ?? 1, minimum: 0.5, maximum: 3600)
@@ -34,6 +39,8 @@ final class AppModel: ObservableObject {
         launchAtLoginDescription = launchAtLoginState.description
     }
 
+    // MARK: - Display values
+
     var formattedInterval: String {
         intervalSeconds.formatted(.number.precision(.fractionLength(0 ... 1)))
     }
@@ -41,30 +48,51 @@ final class AppModel: ObservableObject {
     var activityMessage: String {
         if isRunning {
             if let lastJiggleAt {
-                return "Activo. Ultimo movimiento: \(lastJiggleAt.formatted(date: .omitted, time: .standard))."
+                return L10n.format(
+                    "activity.running.last",
+                    fallback: "Running. Last movement: %@.",
+                    lastJiggleAt.formatted(date: .omitted, time: .standard)
+                )
             }
 
-            return "Activo. Intervalo actual: \(formattedInterval) s."
+            return L10n.format(
+                "activity.running.interval",
+                fallback: "Running. Current interval: %@ s.",
+                formattedInterval
+            )
         }
 
-        return "Detenido. Intervalo configurado: \(formattedInterval) s."
+        return L10n.format(
+            "activity.stopped.interval",
+            fallback: "Stopped. Configured interval: %@ s.",
+            formattedInterval
+        )
     }
 
     var lastJiggleDescription: String {
         guard let lastJiggleAt else {
-            return "Sin movimientos todavia."
+            return L10n.text("menu.lastMovement.none", fallback: "No movements yet.")
         }
 
-        return "Ultimo movimiento: \(lastJiggleAt.formatted(date: .omitted, time: .standard))."
+        return L10n.format(
+            "menu.lastMovement",
+            fallback: "Last movement: %@.",
+            lastJiggleAt.formatted(date: .omitted, time: .standard)
+        )
     }
 
     var permissionMessage: String {
         if hasAccessibilityPermission {
-            return "Permiso de Accesibilidad concedido."
+            return L10n.text("permission.granted", fallback: "Accessibility permission granted.")
         }
 
-        return "macOS necesita permiso de Accesibilidad para mover el cursor."
+        return L10n.text(
+            "permission.required",
+            fallback: "macOS needs Accessibility permission to move the cursor."
+        )
     }
+
+    // MARK: - Preferences
 
     func setInterval(_ newValue: Double) {
         let clamped = Self.clamp(newValue, minimum: minimumInterval, maximum: maximumInterval)
@@ -92,7 +120,10 @@ final class AppModel: ObservableObject {
         case .success:
             break
         case .requiresApproval:
-            noticeMessage = "macOS necesita aprobacion para abrir la app al iniciar sesion."
+            noticeMessage = L10n.text(
+                "notice.launchApproval",
+                fallback: "macOS requires approval before the app can open at login."
+            )
         case .unavailable(let message), .failure(let message):
             noticeMessage = message
         }
@@ -100,10 +131,15 @@ final class AppModel: ObservableObject {
         refreshLaunchAtLoginStatus()
     }
 
+    // MARK: - Jiggler controls
+
     func start() {
         refreshAccessibilityStatus(prompt: true)
         guard hasAccessibilityPermission else {
-            noticeMessage = "Concede Accesibilidad para que la app pueda mover el cursor."
+            noticeMessage = L10n.text(
+                "notice.accessibilityRequired",
+                fallback: "Grant Accessibility permission so the app can move the cursor."
+            )
             return
         }
 
@@ -118,6 +154,7 @@ final class AppModel: ObservableObject {
         isRunning = false
     }
 
+    /// Refreshes macOS Accessibility authorization and stops movement if access was revoked.
     func refreshAccessibilityStatus(prompt: Bool = false) {
         hasAccessibilityPermission = Self.isAccessibilityTrusted(prompt: prompt)
 
@@ -149,6 +186,32 @@ final class AppModel: ObservableObject {
         noticeMessage = nil
     }
 
+    /// Performs one movement cycle and optionally asks macOS to show the permission prompt.
+    func jiggleNow(promptForPermission: Bool) {
+        refreshAccessibilityStatus(prompt: promptForPermission)
+        guard hasAccessibilityPermission else {
+            noticeMessage = L10n.text(
+                "notice.accessibilityMissing",
+                fallback: "Accessibility permission is required to move the cursor."
+            )
+            return
+        }
+
+        if jigglerService.jiggle() {
+            lastJiggleAt = Date()
+            noticeMessage = nil
+            return
+        }
+
+        noticeMessage = L10n.text(
+            "notice.jiggleFailed",
+            fallback: "The cursor movement could not be sent."
+        )
+        stop()
+    }
+
+    // MARK: - Timer and permissions
+
     private func scheduleTimer() {
         timer?.invalidate()
 
@@ -161,23 +224,6 @@ final class AppModel: ObservableObject {
         timer.tolerance = min(intervalSeconds * 0.1, 0.25)
         RunLoop.main.add(timer, forMode: .common)
         self.timer = timer
-    }
-
-    func jiggleNow(promptForPermission: Bool) {
-        refreshAccessibilityStatus(prompt: promptForPermission)
-        guard hasAccessibilityPermission else {
-            noticeMessage = "No hay permiso de Accesibilidad para mover el cursor."
-            return
-        }
-
-        if jigglerService.jiggle() {
-            lastJiggleAt = Date()
-            noticeMessage = nil
-            return
-        }
-
-        noticeMessage = "No se pudo enviar el movimiento del cursor."
-        stop()
     }
 
     private static func isAccessibilityTrusted(prompt: Bool) -> Bool {
