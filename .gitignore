@@ -1,0 +1,18 @@
+# macOS
+.DS_Store
+
+# Build and distribution artifacts
+build/
+dist/
+
+# Swift/Xcode local state
+.build/
+.swiftpm/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+
+# Local configuration
+.env
+.env.*
+!.env.example
